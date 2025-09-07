@@ -1,7 +1,15 @@
 services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+  x-scheduler:
+    build: .
+    container_name: x-post-scheduler
+    restart: unless-stopped
+    tty: true
     ports:
-      - "8000:8000"
+      - "8002:8002"
+    env_file:
+      - .env
+
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+      - ./media:/app/media

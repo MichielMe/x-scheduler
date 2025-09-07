@@ -1,27 +1,30 @@
 from fastapi import APIRouter, Request, Response
-from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
+
 from app.core import settings
 
 router = APIRouter()
 templates = Jinja2Templates(directory=settings.TEMPLATES_DIR)
 
-@router.get('/', response_class=HTMLResponse)
+
+@router.get("/", response_class=HTMLResponse)
 def index(request: Request):
     return templates.TemplateResponse(
-        'pages/index.html',
+        "pages/index.html",
         {
-            'title': 'Home',
-            'request': request,
-        }
+            "title": "Home",
+            "request": request,
+        },
     )
-    
-@router.get('/styletest', response_class=HTMLResponse)
+
+
+@router.get("/styletest", response_class=HTMLResponse)
 def styletest(request: Request):
     return templates.TemplateResponse(
-        'pages/styletest.html',
+        "pages/styletest.html",
         {
-            'title': 'Style Test',
-            'request': request,
-        }
+            "title": "Style Test",
+            "request": request,
+        },
     )

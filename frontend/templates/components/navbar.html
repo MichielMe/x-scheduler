@@ -1,6 +1,6 @@
 <nav class="navbar bg-base-200 shadow-lg">
   <!-- Mobile hamburger menu -->
-  <div class=" lg:hidden">
+  <div class="lg:hidden">
     <div class="dropdown">
       <div tabindex="0" role="button" class="btn btn-ghost">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -8,20 +8,30 @@
         </svg>
       </div>
       <ul tabindex="0" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
-        <li><a href="#home">Home</a></li>
-        <li><a href="#about">About</a></li>
-
+        <li><a href="/">Home</a></li>
+        <li><a href="/dashboard">Dashboard</a></li>
       </ul>
     </div>
   </div>
 
-  <!-- Centered navigation for desktop, hidden on mobile -->
-  <div class=" hidden lg:flex">
-    <ul class="menu menu-horizontal px-1">
-      <li><a href="#home" class="hover:text-primary">Home</a></li>
-      <li><a href="#about" class="hover:text-primary">About</a></li>
+  <!-- Logo or Title -->
+  <div class="navbar-start hidden lg:flex">
+    <a href="/" class="text-lg font-bold">X Scheduler</a>
+  </div>
 
+  <!-- Centered navigation for desktop, hidden on mobile -->
+  <div class="navbar-center hidden lg:flex">
+    <ul class="menu menu-horizontal px-1">
+      <li><a href="/" class="hover:text-primary">Home</a></li>
+      <li><a href="/dashboard" class="hover:text-primary">Dashboard</a></li>
     </ul>
   </div>
 
+  <!-- Status indicator -->
+  <div class="navbar-end">
+    <div class="badge badge-success gap-2 hidden lg:flex">
+      <span class="h-2 w-2 bg-white rounded-full animate-pulse"></span>
+      Active
+    </div>
+  </div>
 </nav>

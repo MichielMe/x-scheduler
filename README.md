@@ -1,297 +1,124 @@
-# FastAPI + Tailwind CSS + DaisyUI Template
+# X-Scheduler
 
-A modern, production-ready template for building web applications with FastAPI backend and Tailwind CSS + DaisyUI frontend.
+A Python-based application to schedule and manage posts for X (formerly Twitter).
 
-## 🚀 Features
+## Features
 
-- **FastAPI Backend**: Modern Python web framework with automatic OpenAPI documentation
-- **Tailwind CSS**: Utility-first CSS framework for rapid UI development
-- **DaisyUI**: Component library built on Tailwind CSS
-- **Custom Dark Theme**: Professional dark theme with custom color scheme
-- **Jinja2 Templates**: Server-side rendering with component-based architecture
-- **Docker Support**: Containerized deployment with multi-stage builds
-- **uv Package Manager**: Fast Python package management
-- **Modular Architecture**: Clean separation of concerns with organized project structure
+- Schedule X posts and threads via CSV upload
+- Monitor scheduled posts through a user-friendly dashboard
+- Support for media attachments
+- Thread scheduling support
+- Timezone support
+- Built with FastAPI, APScheduler, and Tweepy
 
-## 📁 Project Structure
+## Installation
 
-```
-├── app/                    # FastAPI application
-│   ├── api/               # API routes
-│   ├── core/              # Core configuration and settings
-│   ├── models/            # Database models
-│   ├── schemas/           # Pydantic schemas
-│   ├── services/          # Business logic
-│   ├── views/             # Frontend view controllers
-│   └── main.py            # FastAPI app entry point
-├── frontend/              # Frontend assets and templates
-│   ├── static/            # Static files (CSS, JS, images)
-│   │   ├── css/           # Tailwind CSS files
-│   │   ├── js/            # JavaScript files
-│   │   └── images/        # Image assets
-│   └── templates/         # Jinja2 templates
-│       ├── components/    # Reusable components
-│       ├── pages/         # Page templates
-│       └── base.html      # Base template
-├── docker-compose.yml     # Docker Compose configuration
-├── Dockerfile            # Docker image configuration
-├── pyproject.toml        # Python project configuration
-└── Makefile             # Development commands
-```
+### Using Docker (Recommended)
 
-## 🛠️ Prerequisites
+1. Clone this repository:
 
-- Python 3.13+
-- Node.js 18+
-- [uv](https://github.com/astral-sh/uv) (Python package manager)
-- Docker (optional, for containerized deployment)
+   ```bash
+   git clone https://github.com/yourusername/x-scheduler.git
+   cd x-scheduler
+   ```
 
-## 🚀 Quick Start
+2. Create an `.env` file based on the example:
 
-### Option 1: Local Development
+   ```bash
+   cp .env.example .env
+   ```
 
-#### 1. Clone the repository
+3. Edit the `.env` file with your X API credentials and settings
 
-```bash
-git clone <your-repo-url>
-cd <your-project-name>
-```
+4. Start the application using Docker Compose:
+   ```bash
+   docker-compose up -d
+   ```
 
-#### 2. Backend Setup
+### Manual Installation
 
-```bash
-# Install Python dependencies
-uv sync
+1. Clone this repository:
 
-# Start the FastAPI development server
-uv run fastapi dev --host 0.0.0.0 --port 8000
-```
+   ```bash
+   git clone https://github.com/yourusername/x-scheduler.git
+   cd x-scheduler
+   ```
 
-The backend will be available at `http://localhost:8000`
+2. Create a virtual environment and install dependencies:
 
-#### 3. Frontend Setup
+   ```bash
+   uv venv .venv
+   source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+   uv pip install .
+   ```
 
-```bash
-# Navigate to frontend directory
-cd frontend
+3. Create an `.env` file based on the example:
 
-# Install Node.js dependencies
-npm install
+   ```bash
+   cp .env.example .env
+   ```
 
-# Start Tailwind CSS watch mode
-npm run dev
-```
+4. Edit the `.env` file with your X API credentials and settings
 
-This will watch for changes in your CSS and automatically rebuild the output CSS file.
+5. Run the application:
+   ```bash
+   uvicorn app.main:app --reload --port 8002
+   ```
 
-### Option 2: Docker Development
+## Usage
 
-```bash
-# Build and start the application
-docker compose up --build
+1. Access the application at `http://localhost:8002`
 
-# Or use the Makefile
-make run-docker
-```
+2. Navigate to the Dashboard
 
-The application will be available at `http://localhost:8000`
+3. Upload a CSV file with your posts data
 
-## 🎨 Customization
+4. Monitor the status of your scheduled posts on the dashboard
 
-### Tailwind CSS Configuration
+## CSV Format
 
-The Tailwind CSS configuration is located in `frontend/static/css/input.css`. The template includes:
+Your CSV file should have the following columns:
 
-- **Custom DaisyUI Theme**: A professional dark theme called "broadcast-pro"
-- **Google Fonts**: PT Sans font family
-- **Custom Color Scheme**: Dark backgrounds with electric blue accents
-
-To customize the theme, modify the `@plugin "daisyui/theme"` section in `input.css`.
-
-### Adding New Pages
-
-1. Create a new template in `frontend/templates/pages/`
-2. Add a new route in `app/views/` or create a new router file
-3. Include the router in `app/main.py`
+| Column          | Description                                  | Required |
+| --------------- | -------------------------------------------- | -------- |
+| content         | The text content of the post (max 280 chars) | Yes      |
+| date            | Date in YYYY-MM-DD format                    | Yes      |
+| time            | Time in HH:MM:SS format                      | Yes      |
+| timezone        | Timezone (e.g., UTC, America/New_York)       | Yes      |
+| thread_id       | ID to group posts as a thread                | No       |
+| thread_position | Position of the post in the thread           | No       |
+| thread_title    | Title of the thread                          | No       |
+| media_urls      | Comma-separated URLs to media files          | No       |
 
 Example:
 
-```python
-# app/views/about.py
-from fastapi import APIRouter, Request
-from fastapi.templating import Jinja2Templates
-from fastapi.responses import HTMLResponse
-from app.core import settings
-
-router = APIRouter()
-templates = Jinja2Templates(directory=settings.TEMPLATES_DIR)
-
-@router.get('/about', response_class=HTMLResponse)
-def about(request: Request):
-    return templates.TemplateResponse(
-        'pages/about.html',
-        {
-            'title': 'About',
-            'request': request,
-        }
-    )
+```
+content,date,time,timezone,thread_id,thread_position,thread_title,media_urls
+"This is my first post!",2023-01-01,09:00:00,UTC,,,,"https://example.com/image.jpg"
+"First post in a thread",2023-01-02,10:00:00,UTC,thread1,1,"My Thread",""
+"Second post in the thread",2023-01-02,10:00:00,UTC,thread1,2,"My Thread",""
 ```
 
-### Adding Components
+## X API Access
 
-Create reusable components in `frontend/templates/components/` and include them in your pages:
+To use this application, you need to obtain API credentials from the X Developer Portal:
 
-```html
-<!-- frontend/templates/components/my-component.html -->
-<div class="my-component">
-  <!-- Component content -->
-</div>
+1. Sign up for a developer account at [developer.x.com](https://developer.x.com)
+2. Create a new Project and App
+3. Apply for Elevated access if needed
+4. Generate consumer keys and access tokens
+5. Add these credentials to your `.env` file
 
-<!-- Usage in pages -->
-{% include 'components/my-component.html' %}
-```
+## Development
 
-## 🔧 Development Commands
+This project uses:
 
-The project includes a Makefile with common development commands:
+- FastAPI for the backend API
+- APScheduler for post scheduling
+- Tweepy for X API integration
+- Jinja2 and DaisyUI for the frontend
+- Docker and Docker Compose for containerization
 
-```bash
-# Start development server with uv
-make run-uv
+## License
 
-# Start with Docker
-make run-docker
-
-# Stop Docker containers
-make down-docker
-
-# Clean cache files
-make clean
-```
-
-### Frontend Commands
-
-```bash
-# Watch mode for development
-npm run dev
-
-# Build for production
-npm run build
-```
-
-## 🐳 Docker Deployment
-
-The project includes a multi-stage Dockerfile optimized for production:
-
-1. **Builder Stage**: Installs dependencies and builds the application
-2. **Runtime Stage**: Minimal image with only the application and runtime dependencies
-
-### Environment Variables
-
-Configure the application using environment variables:
-
-- `PROJECT_NAME`: Application name (default: "FastAPI Project")
-- `LOG_LEVEL`: Logging level (default: "INFO")
-- `BACKEND_CORS_ORIGINS`: List of allowed CORS origins
-
-Create a `.env` file in the project root:
-
-```env
-PROJECT_NAME=My Awesome App
-LOG_LEVEL=DEBUG
-BACKEND_CORS_ORIGINS=["http://localhost:3000", "https://myapp.com"]
-```
-
-## 📝 API Documentation
-
-FastAPI automatically generates interactive API documentation:
-
-- **Swagger UI**: `http://localhost:8000/docs`
-- **ReDoc**: `http://localhost:8000/redoc`
-- **OpenAPI JSON**: `http://localhost:8000/openapi.json`
-
-## 📋 Using as a Template
-
-### Method 1: Use GitHub Template (Recommended)
-
-1. **Click "Use this template"** button on the GitHub repository page
-2. **Create your new repository** with your desired name
-3. **Clone your new repository**:
-   ```bash
-   git clone https://github.com/yourusername/your-new-project.git
-   cd your-new-project
-   ```
-
-### Method 2: Manual Setup
-
-1. **Clone this template**:
-
-   ```bash
-   git clone https://github.com/original-owner/fastapi-tailwind-template.git
-   cd fastapi-tailwind-template
-   ```
-
-2. **Remove the original git history**:
-
-   ```bash
-   rm -rf .git
-   git init
-   ```
-
-3. **Create your own repository** on GitHub and add it as origin:
-
-   ```bash
-   git remote add origin https://github.com/yourusername/your-new-project.git
-   ```
-
-4. **Make your initial commit**:
-   ```bash
-   git add .
-   git commit -m "Initial commit from template"
-   git branch -M main
-   git push -u origin main
-   ```
-
-### After Setup
-
-1. **Update project configuration**:
-
-   - Edit `pyproject.toml` to change the project name and description
-   - Update `app/core/config.py` to set your `PROJECT_NAME`
-   - Modify the custom theme in `frontend/static/css/input.css` if desired
-
-2. **Follow the Quick Start guide** above to run your new project
-
-## 🚀 Production Deployment
-
-1. **Build the Docker image**:
-
-   ```bash
-   docker build -t my-app .
-   ```
-
-2. **Run the container**:
-
-   ```bash
-   docker run -p 8000:8000 my-app
-   ```
-
-3. **Or use Docker Compose**:
-   ```bash
-   docker compose up --build
-   ```
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- [FastAPI](https://fastapi.tiangolo.com/) - Modern web framework for Python
-- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework
-- [DaisyUI](https://daisyui.com/) - Component library for Tailwind CSS
-- [uv](https://github.com/astral-sh/uv) - Fast Python package manager
-
----
-
-**Happy coding! 🎉**
+[License information]

@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="col-span-12">
+  <div class="card w-full bg-base-100 shadow-xl">
+    <div class="card-body">
+      <div class="flex justify-between items-center mb-6">
+        <h1 class="card-title text-3xl">Thread Details: {% if thread.title %}{{ thread.title }}{% else %}Untitled
+          Thread{% endif %}</h1>
+        <a href="/dashboard" class="btn btn-sm btn-outline">Back to Dashboard</a>
+      </div>
+
+      <div class="grid grid-cols-1 gap-6">
+        <!-- Thread Details Card -->
+        <div class="card bg-base-200 shadow-lg">
+          <div class="card-body">
+            <h2 class="card-title">Thread Information</h2>
+            <div class="overflow-x-auto">
+              <table class="table">
+                <tbody>
+                  <tr>
+                    <td class="font-medium">Thread ID:</td>
+                    <td>{{ thread.id }}</td>
+                  </tr>
+                  <tr>
+                    <td class="font-medium">Status:</td>
+                    <td>
+                      {% if thread.status == 'pending' %}
+                      <div class="badge badge-warning">Pending</div>
+                      {% elif thread.status == 'scheduled' %}
+                      <div class="badge badge-primary">Scheduled</div>
+                      {% elif thread.status == 'published' %}
+                      <div class="badge badge-success">Published</div>
+                      {% elif thread.status == 'failed' %}
+                      <div class="badge badge-error">Failed</div>
+                      {% else %}
+                      <div class="badge">{{ thread.status }}</div>
+                      {% endif %}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="font-medium">Scheduled Date:</td>
+                    <td>{{ thread.scheduled_date }}</td>
+                  </tr>
+                  <tr>
+                    <td class="font-medium">Timezone:</td>
+                    <td>{{ thread.timezone }}</td>
+                  </tr>
+                  <tr>
+                    <td class="font-medium">Total Posts:</td>
+                    <td>{{ thread.posts|length }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Action buttons -->
+            <div class="card-actions justify-end mt-4">
+              {% if thread.status == 'scheduled' %}
+              <a href="/cancel-thread/{{ thread.id }}" class="btn btn-warning">Cancel Thread</a>
+              {% endif %}
+              {% if thread.posts|length > 0 and thread.posts[0].x_post_id and thread.status == 'published' %}
+              <a href="https://x.com/anyuser/status/{{ thread.posts[0].x_post_id }}" target="_blank"
+                class="btn btn-primary">View Thread on X</a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+        <!-- Thread Posts Timeline -->
+        <div class="card bg-base-200 shadow-lg">
+          <div class="card-body">
+            <h2 class="card-title">Thread Posts</h2>
+            <ul class="timeline timeline-vertical">
+              {% for post in thread.posts %}
+              <li>
+                <div class="timeline-start">{{ post.thread_position }}</div>
+                <div class="timeline-middle">
+                  {% if post.status == 'pending' %}
+                  <div class="badge badge-warning badge-outline"></div>
+                  {% elif post.status == 'scheduled' %}
+                  <div class="badge badge-primary badge-outline"></div>
+                  {% elif post.status == 'published' %}
+                  <div class="badge badge-success badge-outline"></div>
+                  {% elif post.status == 'failed' %}
+                  <div class="badge badge-error badge-outline"></div>
+                  {% else %}
+                  <div class="badge badge-outline"></div>
+                  {% endif %}
+                </div>
+                <div class="timeline-end timeline-box">
+                  <p>{{ post.content }}</p>
+                  {% if post.media_urls %}
+                  <div class="flex flex-wrap gap-2 mt-2">
+                    {% for url in post.media_urls %}
+                    <div class="avatar">
+                      <div class="w-16 rounded">
+                        <img src="{{ url }}" alt="Media attachment" />
+                      </div>
+                    </div>
+                    {% endfor %}
+                  </div>
+                  {% endif %}
+                  {% if post.x_post_id %}
+                  <div class="mt-2">
+                    <a href="https://x.com/anyuser/status/{{ post.x_post_id }}" target="_blank"
+                      class="text-xs link link-primary">View on X</a>
+                  </div>
+                  {% endif %}
+                </div>
+                {% if not loop.last %}
+                <hr />
+                {% endif %}
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

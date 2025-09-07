@@ -1,16 +1,90 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
 {% block content %}
-
 <div class="col-span-12">
-  <h1 class="text-2xl font-bold">Home</h1>
-  <div class="grid grid-cols-1 lg:grid-cols-12 gap-y-12 p-4 lg:gap-x-12 lg:p-10">
-    {% include 'components/card.html' %}
-    {% include 'components/card.html' %}
+  <div class="hero min-h-[70vh] bg-base-200 rounded-lg shadow-lg">
+    <div class="hero-content text-center">
+      <div class="max-w-md">
+        <h1 class="text-5xl font-bold">X Scheduler</h1>
+        <p class="py-6">Schedule and manage your X posts with ease. Upload a CSV file with your posts, specify dates and
+          times, and let our system handle the rest.</p>
+        <a href="/dashboard" class="btn btn-primary">Go to Dashboard</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+    <div class="card bg-base-100 shadow-lg">
+      <div class="card-body">
+        <h2 class="card-title">Schedule Posts</h2>
+        <p>Upload a CSV file with your posts and schedule them to be published at specific dates and times.</p>
+      </div>
+    </div>
+
+    <div class="card bg-base-100 shadow-lg">
+      <div class="card-body">
+        <h2 class="card-title">Create Threads</h2>
+        <p>Easily schedule threads by specifying thread IDs, positions, and titles in your CSV file.</p>
+      </div>
+    </div>
+
+    <div class="card bg-base-100 shadow-lg">
+      <div class="card-body">
+        <h2 class="card-title">Monitor Status</h2>
+        <p>Track the status of your scheduled posts and threads from a centralized dashboard.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-12 card bg-base-100 shadow-lg">
+    <div class="card-body">
+      <h2 class="card-title">CSV Format</h2>
+      <p>Your CSV file should follow this format:</p>
+      <div class="overflow-x-auto mt-4">
+        <table class="table table-zebra">
+          <thead>
+            <tr>
+              <th>Column</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>content</td>
+              <td>The text content of your post (max 280 characters)</td>
+            </tr>
+            <tr>
+              <td>date</td>
+              <td>The date in YYYY-MM-DD format</td>
+            </tr>
+            <tr>
+              <td>time</td>
+              <td>The time in HH:MM:SS format</td>
+            </tr>
+            <tr>
+              <td>timezone</td>
+              <td>The timezone (e.g., UTC, America/New_York)</td>
+            </tr>
+            <tr>
+              <td>thread_id</td>
+              <td>Optional: ID to group posts as a thread</td>
+            </tr>
+            <tr>
+              <td>thread_position</td>
+              <td>Optional: Position of the post in the thread</td>
+            </tr>
+            <tr>
+              <td>thread_title</td>
+              <td>Optional: Title of the thread</td>
+            </tr>
+            <tr>
+              <td>media_urls</td>
+              <td>Optional: Comma-separated URLs to media files</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </div>
-
-
-
-
 {% endblock %}

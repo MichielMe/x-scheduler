@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="col-span-12">
+  <div class="card w-full bg-base-100 shadow-xl">
+    <div class="card-body">
+      <div class="flex justify-between items-center mb-6">
+        <h1 class="card-title text-3xl">Post Details</h1>
+        <a href="/dashboard" class="btn btn-sm btn-outline">Back to Dashboard</a>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Post Content Card -->
+        <div class="card bg-base-200 shadow-lg">
+          <div class="card-body">
+            <h2 class="card-title">Content</h2>
+            <div class="bg-base-300 p-4 rounded-lg min-h-24">
+              <p>{{ post.content }}</p>
+            </div>
+
+            {% if post.media_urls %}
+            <h3 class="mt-4 font-semibold">Media</h3>
+            <div class="flex flex-wrap gap-2 mt-2">
+              {% for url in post.media_urls %}
+              <div class="avatar">
+                <div class="w-24 rounded">
+                  <img src="{{ url }}" alt="Media attachment" />
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Post Details Card -->
+        <div class="card bg-base-200 shadow-lg">
+          <div class="card-body">
+            <h2 class="card-title">Details</h2>
+            <div class="overflow-x-auto">
+              <table class="table">
+                <tbody>
+                  <tr>
+                    <td>Post ID:</td>
+                    <td>{{ post.id }}</td>
+                  </tr>
+                  <tr>
+                    <td>Status:</td>
+                    <td>
+                      {% if post.status == 'pending' %}
+                      <div class="badge badge-warning">Pending</div>
+                      {% elif post.status == 'scheduled' %}
+                      <div class="badge badge-primary">Scheduled</div>
+                      {% elif post.status == 'published' %}
+                      <div class="badge badge-success">Published</div>
+                      {% elif post.status == 'failed' %}
+                      <div class="badge badge-error">Failed</div>
+                      {% else %}
+                      <div class="badge">{{ post.status }}</div>
+                      {% endif %}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Scheduled Date:</td>
+                    <td>{{ post.scheduled_date }}</td>
+                  </tr>
+                  <tr>
+                    <td>Timezone:</td>
+                    <td>{{ post.timezone }}</td>
+                  </tr>
+                  {% if post.thread_id %}
+                  <tr>
+                    <td>Thread ID:</td>
+                    <td>
+                      <a href="/thread/{{ post.thread_id }}" class="link link-primary">{{ post.thread_id }}</a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Position in Thread:</td>
+                    <td>{{ post.thread_position }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if post.x_post_id %}
+                  <tr>
+                    <td>X Post ID:</td>
+                    <td>
+                      <a href="https://x.com/anyuser/status/{{ post.x_post_id }}" target="_blank"
+                        class="link link-primary">{{ post.x_post_id }}</a>
+                    </td>
+                  </tr>
+                  {% endif %}
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Action buttons -->
+            <div class="card-actions justify-end mt-4">
+              {% if post.status == 'scheduled' %}
+              <a href="/cancel-post/{{ post.id }}" class="btn btn-warning">Cancel Post</a>
+              {% endif %}
+              {% if post.status == 'published' and post.x_post_id %}
+              <a href="https://x.com/anyuser/status/{{ post.x_post_id }}" target="_blank" class="btn btn-primary">View
+                on X</a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

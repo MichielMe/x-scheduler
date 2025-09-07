@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="col-span-12">
+  <div class="card w-full bg-base-100 shadow-xl">
+    <div class="card-body">
+      <h1 class="card-title text-3xl">X Scheduler Dashboard</h1>
+      <p class="text-xl mb-6">Monitor and manage your scheduled X posts</p>
+
+      <div class="flex flex-col md:flex-row gap-4">
+        <div class="stats shadow">
+          <div class="stat">
+            <div class="stat-title">Posts Scheduled</div>
+            <div class="stat-value">{{ stats.scheduled }}</div>
+            <div class="stat-desc">{{ stats.percent_used }}% of monthly limit used</div>
+          </div>
+
+          <div class="stat">
+            <div class="stat-title">Posts Published</div>
+            <div class="stat-value">{{ stats.published }}</div>
+          </div>
+
+          <div class="stat">
+            <div class="stat-title">Posts Failed</div>
+            <div class="stat-value text-error">{{ stats.failed }}</div>
+          </div>
+        </div>
+
+        <div class="form-control w-full max-w-xs">
+          <label class="label">
+            <span class="label-text">Upload CSV file</span>
+          </label>
+          <form method="POST" action="/api/uploads/upload-csv" enctype="multipart/form-data"
+            class="flex flex-col gap-2">
+            <input type="file" name="csv_file" accept=".csv" class="file-input file-input-bordered w-full max-w-xs"
+              required />
+            <button type="submit" class="btn btn-primary">Upload</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Tabs for navigation -->
+      <div class="tabs tabs-boxed my-4">
+        <a href="#posts" class="tab tab-active" id="posts-tab">Single Posts</a>
+        <a href="#threads" class="tab" id="threads-tab">Threads</a>
+      </div>
+
+      <!-- Posts Table -->
+      <div id="posts-section">
+        <div class="overflow-x-auto">
+          <table class="table table-zebra w-full">
+            <thead>
+              <tr>
+                <th>Content</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for post in posts %}
+              <tr>
+                <td class="max-w-md">
+                  <div class="truncate">{{ post.content }}</div>
+                </td>
+                <td>{{ post.scheduled_date }}</td>
+                <td>
+                  {% if post.status == 'pending' %}
+                  <div class="badge badge-warning">Pending</div>
+                  {% elif post.status == 'scheduled' %}
+                  <div class="badge badge-primary">Scheduled</div>
+                  {% elif post.status == 'published' %}
+                  <div class="badge badge-success">Published</div>
+                  {% elif post.status == 'failed' %}
+                  <div class="badge badge-error">Failed</div>
+                  {% else %}
+                  <div class="badge">{{ post.status }}</div>
+                  {% endif %}
+                </td>
+                <td>
+                  <div class="dropdown dropdown-end">
+                    <div tabindex="0" role="button" class="btn btn-xs m-1">Actions</div>
+                    <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                      <li><a href="/post/{{ post.id }}" class="text-info">View</a></li>
+                      {% if post.status == 'scheduled' %}
+                      <li><a href="/cancel-post/{{ post.id }}" class="text-warning">Cancel</a></li>
+                      {% endif %}
+                      {% if post.status == 'published' and post.x_post_id %}
+                      <li><a href="https://x.com/anyuser/status/{{ post.x_post_id }}" target="_blank"
+                          class="text-primary">View on X</a></li>
+                      {% endif %}
+                    </ul>
+                  </div>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Threads Table -->
+      <div id="threads-section" class="hidden">
+        <div class="overflow-x-auto">
+          <table class="table table-zebra w-full">
+            <thead>
+              <tr>
+                <th>Thread Title</th>
+                <th>Posts</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for thread in threads %}
+              <tr>
+                <td>{{ thread.title }}</td>
+                <td>{{ thread.posts|length }}</td>
+                <td>{{ thread.scheduled_date }}</td>
+                <td>
+                  {% if thread.status == 'pending' %}
+                  <div class="badge badge-warning">Pending</div>
+                  {% elif thread.status == 'scheduled' %}
+                  <div class="badge badge-primary">Scheduled</div>
+                  {% elif thread.status == 'published' %}
+                  <div class="badge badge-success">Published</div>
+                  {% elif thread.status == 'failed' %}
+                  <div class="badge badge-error">Failed</div>
+                  {% else %}
+                  <div class="badge">{{ thread.status }}</div>
+                  {% endif %}
+                </td>
+                <td>
+                  <div class="dropdown dropdown-end">
+                    <div tabindex="0" role="button" class="btn btn-xs m-1">Actions</div>
+                    <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                      <li><a href="/thread/{{ thread.id }}" class="text-info">View</a></li>
+                      {% if thread.status == 'scheduled' %}
+                      <li><a href="/cancel-thread/{{ thread.id }}" class="text-warning">Cancel</a></li>
+                      {% endif %}
+                    </ul>
+                  </div>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Attach a simple tab script -->
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const postsTab = document.getElementById('posts-tab');
+    const threadsTab = document.getElementById('threads-tab');
+    const postsSection = document.getElementById('posts-section');
+    const threadsSection = document.getElementById('threads-section');
+
+    postsTab.addEventListener('click', function (e) {
+      e.preventDefault();
+      postsTab.classList.add('tab-active');
+      threadsTab.classList.remove('tab-active');
+      postsSection.classList.remove('hidden');
+      threadsSection.classList.add('hidden');
+    });
+
+    threadsTab.addEventListener('click', function (e) {
+      e.preventDefault();
+      threadsTab.classList.add('tab-active');
+      postsTab.classList.remove('tab-active');
+      threadsSection.classList.remove('hidden');
+      postsSection.classList.add('hidden');
+    });
+  });
+</script>
+{% endblock %}

@@ -27,6 +27,8 @@ FROM python:3.13-slim-bookworm
 # Python executable must be the same, e.g., using `python:3.11-slim-bookworm`
 # will fail.
 
+EXPOSE 8002
+
 # Copy the application from the builder
 COPY --from=builder --chown=app:app /app /app
 
@@ -34,4 +36,4 @@ COPY --from=builder --chown=app:app /app /app
 ENV PATH="/app/.venv/bin:$PATH"
 
 # Run the FastAPI application by default
-CMD ["fastapi", "dev", "--host", "0.0.0.0", "/app/app/main.py"]
+CMD ["fastapi", "dev", "--host", "0.0.0.0", "--port", "8002", "/app/app/main.py"]
