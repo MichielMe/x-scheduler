@@ -2,10 +2,15 @@
   "dependencies": {
     "@tailwindcss/cli": "^4.1.11",
     "daisyui": "^5.0.43",
-    "tailwindcss": "^4.1.11"
+    "tailwindcss": "^4.1.11",
+    "postcss": "^8.4.31",
+    "postcss-import": "^15.1.0",
+    "postcss-cli": "^11.0.0"
   },
   "scripts": {
-    "dev": "npx @tailwindcss/cli -i ./static/css/input.css -o ./static/css/output.css --watch",
-    "build": "npx @tailwindcss/cli -i ./static/css/input.css -o ./static/css/output.css"
+    "dev": "npm run build:css && npm run watch:css",
+    "build": "npm run build:css",
+    "build:css": "npx @tailwindcss/cli -i ./static/css/input.css -o ./static/css/output.css && npx postcss ./static/css/custom.css -o ./static/css/custom.min.css",
+    "watch:css": "npx @tailwindcss/cli -i ./static/css/input.css -o ./static/css/output.css --watch & npx postcss ./static/css/custom.css -o ./static/css/custom.min.css --watch"
   }
 }

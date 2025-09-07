@@ -1,23 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="x-scheduler">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <link rel="stylesheet" href="{{ url_for('static', path='css/output.css')}}">
+  <link rel="stylesheet" href="{{ url_for('static', path='css/custom.css')}}">
 
-  <title>App | {{ title }}</title>
+  <title>X Scheduler | {{ title }}</title>
 </head>
 
-<body>
+<body class="min-h-screen bg-base-100">
   {% include 'components/navbar.html' %}
-  <div class="grid grid-cols-1 lg:grid-cols-12 gap-y-12 p-4 lg:gap-x-12 lg:p-10">
+  <main class="container mx-auto grid grid-cols-1 lg:grid-cols-12 gap-y-8 p-4 lg:gap-x-8 lg:p-8">
     {% block content %}
     {% endblock %}
-
-  </div>
-
+  </main>
 </body>
 
 </html>

@@ -1,60 +1,61 @@
 @import "tailwindcss";
-@import url("https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap");
 @plugin "daisyui";
 @plugin "daisyui/theme" {
-  name: "broadcast-pro";
+  name: "x-scheduler";
   default: true;
   prefersdark: true;
   color-scheme: dark;
 
-  /* Exact dark backgrounds from screenshot */
-  --color-base-100: #1a1a1a; /* Main dark background */
-  --color-base-200: #2a2a2a; /* Slightly lighter panels */
-  --color-base-300: #3a3a3a; /* Elevated elements */
-  --color-base-content: #ffffff; /* Pure white text */
+  /* Modern dark backgrounds with subtle gradient */
+  --color-base-100: #111827; /* Deep blue-gray background */
+  --color-base-200: #1f2937; /* Lighter blue-gray for panels */
+  --color-base-300: #374151; /* Elevated elements */
+  --color-base-content: #f3f4f6; /* Off-white text for better readability */
 
-  /* Bright electric blue - like the active selection */
-  --color-primary: #00a8e8;
+  /* Modern cyan primary color */
+  --color-primary: #06b6d4;
   --color-primary-content: #ffffff;
 
-  /* Muted blue-gray secondary */
-  --color-secondary: #4a5568;
+  /* Subtle purple secondary */
+  --color-secondary: #8b5cf6;
   --color-secondary-content: #ffffff;
 
-  /* Bright accent - electric blue variant */
-  --color-accent: #00d4ff;
-  --color-accent-content: #000000;
+  /* Vibrant teal accent */
+  --color-accent: #14b8a6;
+  --color-accent-content: #ffffff;
 
-  /* Neutral - dark gray */
-  --color-neutral: #2d3748;
+  /* Neutral - deeper blue-gray */
+  --color-neutral: #334155;
   --color-neutral-content: #ffffff;
 
-  /* Exact status colors from screenshot */
-  --color-info: #00a8e8; /* Bright cyan/blue */
+  /* Status colors with modern tones */
+  --color-info: #3b82f6; /* Modern blue */
   --color-info-content: #ffffff;
-  --color-success: #00ff88; /* Bright green for "Ready" */
-  --color-success-content: #000000;
-  --color-warning: #ffa500; /* Orange for warnings */
-  --color-warning-content: #000000;
-  --color-error: #ff4444; /* Bright red for "ON AIR" */
+  --color-success: #10b981; /* Emerald green */
+  --color-success-content: #ffffff;
+  --color-warning: #f59e0b; /* Amber for warnings */
+  --color-warning-content: #ffffff;
+  --color-error: #ef4444; /* Clean red */
   --color-error-content: #ffffff;
 
-  /* Sharp, minimal radius for technical look */
-  --radius-selector: 0.125rem;
-  --radius-field: 0.125rem;
-  --radius-box: 0.125rem;
+  /* Slightly rounded corners for modern look */
+  --radius-selector: 0.25rem;
+  --radius-field: 0.375rem;
+  --radius-box: 0.5rem;
 
-  /* Compact sizing for professional interface */
-  --size-selector: 0.2rem;
-  --size-field: 0.15rem;
+  /* Better sizing for components */
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
 
-  /* Sharp borders */
+  /* Defined borders */
   --border: 1px;
 
-  /* No depth/shadows for flat technical look */
-  --depth: 0;
+  /* Subtle depth for dimensionality */
+  --depth: 0.5;
   --noise: 0;
 }
 @theme {
-  --font-body: "PT Sans", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-heading: "Space Grotesk", sans-serif;
 }

@@ -2,87 +2,180 @@
 
 {% block content %}
 <div class="col-span-12">
-  <div class="hero min-h-[70vh] bg-base-200 rounded-lg shadow-lg">
+  <!-- Hero section with gradient background -->
+  <div
+    class="hero min-h-[60vh] bg-gradient-to-br from-base-100 to-base-200 rounded-xl shadow-sm overflow-hidden relative">
+    <!-- Decorative background elements -->
+    <div class="absolute inset-0 opacity-10">
+      <div class="absolute top-10 right-10 w-32 h-32 rounded-full bg-primary/20 blur-3xl"></div>
+      <div class="absolute bottom-10 left-10 w-40 h-40 rounded-full bg-accent/20 blur-3xl"></div>
+    </div>
+
     <div class="hero-content text-center">
       <div class="max-w-md">
-        <h1 class="text-5xl font-bold">X Scheduler</h1>
-        <p class="py-6">Schedule and manage your X posts with ease. Upload a CSV file with your posts, specify dates and
-          times, and let our system handle the rest.</p>
-        <a href="/dashboard" class="btn btn-primary">Go to Dashboard</a>
+        <div class="flex justify-center mb-6">
+          <div class="rounded-full bg-base-200 p-4 shadow-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-primary" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+          </div>
+        </div>
+        <h1 class="text-5xl font-bold mb-2">X Scheduler</h1>
+        <p class="text-lg opacity-80 mb-8">Schedule and manage your X posts with ease. Upload a CSV file with your
+          content, specify dates and times, and let our system handle the rest.</p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="/dashboard" class="btn btn-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+            </svg>
+            Go to Dashboard
+          </a>
+          <a href="#features" class="btn btn-outline">Learn More</a>
+        </div>
       </div>
     </div>
   </div>
 
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
-    <div class="card bg-base-100 shadow-lg">
-      <div class="card-body">
-        <h2 class="card-title">Schedule Posts</h2>
-        <p>Upload a CSV file with your posts and schedule them to be published at specific dates and times.</p>
-      </div>
+  <!-- Features section with cards -->
+  <div id="features" class="py-12">
+    <div class="text-center mb-8">
+      <h2 class="text-3xl font-bold">Features</h2>
+      <p class="text-sm opacity-75 mt-2">Powerful tools to manage your X content strategy</p>
     </div>
 
-    <div class="card bg-base-100 shadow-lg">
-      <div class="card-body">
-        <h2 class="card-title">Create Threads</h2>
-        <p>Easily schedule threads by specifying thread IDs, positions, and titles in your CSV file.</p>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- Schedule Posts Card -->
+      <div class="card bg-base-200 shadow-sm hover:shadow-md transition-all">
+        <div class="card-body">
+          <div class="rounded-full bg-primary/10 p-3 w-12 h-12 flex items-center justify-center mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h2 class="card-title text-lg">Schedule Posts</h2>
+          <p class="text-sm opacity-80">Upload a CSV file with your posts and schedule them to be published at specific
+            dates and times with precision.</p>
+        </div>
       </div>
-    </div>
 
-    <div class="card bg-base-100 shadow-lg">
-      <div class="card-body">
-        <h2 class="card-title">Monitor Status</h2>
-        <p>Track the status of your scheduled posts and threads from a centralized dashboard.</p>
+      <!-- Create Threads Card -->
+      <div class="card bg-base-200 shadow-sm hover:shadow-md transition-all">
+        <div class="card-body">
+          <div class="rounded-full bg-secondary/10 p-3 w-12 h-12 flex items-center justify-center mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-secondary" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
+            </svg>
+          </div>
+          <h2 class="card-title text-lg">Create Threads</h2>
+          <p class="text-sm opacity-80">Easily schedule thread posts by specifying thread IDs, positions, and titles in
+            your CSV file for connected narratives.</p>
+        </div>
+      </div>
+
+      <!-- Monitor Status Card -->
+      <div class="card bg-base-200 shadow-sm hover:shadow-md transition-all">
+        <div class="card-body">
+          <div class="rounded-full bg-accent/10 p-3 w-12 h-12 flex items-center justify-center mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-accent" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+            </svg>
+          </div>
+          <h2 class="card-title text-lg">Monitor Status</h2>
+          <p class="text-sm opacity-80">Track the status of your scheduled posts and threads from a centralized
+            dashboard with real-time updates.</p>
+        </div>
       </div>
     </div>
   </div>
 
-  <div class="mt-12 card bg-base-100 shadow-lg">
+  <!-- CSV Format section with improved table -->
+  <div class="card bg-base-100 shadow-sm mt-8">
     <div class="card-body">
-      <h2 class="card-title">CSV Format</h2>
-      <p>Your CSV file should follow this format:</p>
-      <div class="overflow-x-auto mt-4">
-        <table class="table table-zebra">
+      <div class="flex items-center gap-3 mb-4">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24"
+          stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+        <h2 class="card-title text-xl">CSV Format</h2>
+      </div>
+
+      <p class="text-sm opacity-80 mb-6">Upload your content as a CSV file with the following columns. The system will
+        automatically process and schedule your posts according to the provided information.</p>
+
+      <div class="overflow-x-auto">
+        <table class="table table-zebra w-full">
           <thead>
             <tr>
               <th>Column</th>
               <th>Description</th>
+              <th>Required</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>content</td>
+              <td class="font-medium">content</td>
               <td>The text content of your post (max 280 characters)</td>
+              <td><span class="badge badge-sm badge-primary">Required</span></td>
             </tr>
             <tr>
-              <td>date</td>
+              <td class="font-medium">date</td>
               <td>The date in YYYY-MM-DD format</td>
+              <td><span class="badge badge-sm badge-primary">Required</span></td>
             </tr>
             <tr>
-              <td>time</td>
+              <td class="font-medium">time</td>
               <td>The time in HH:MM:SS format</td>
+              <td><span class="badge badge-sm badge-primary">Required</span></td>
             </tr>
             <tr>
-              <td>timezone</td>
+              <td class="font-medium">timezone</td>
               <td>The timezone (e.g., UTC, America/New_York)</td>
+              <td><span class="badge badge-sm badge-primary">Required</span></td>
             </tr>
             <tr>
-              <td>thread_id</td>
-              <td>Optional: ID to group posts as a thread</td>
+              <td class="font-medium">thread_id</td>
+              <td>ID to group posts as a thread</td>
+              <td><span class="badge badge-sm badge-ghost">Optional</span></td>
             </tr>
             <tr>
-              <td>thread_position</td>
-              <td>Optional: Position of the post in the thread</td>
+              <td class="font-medium">thread_position</td>
+              <td>Position of the post in the thread</td>
+              <td><span class="badge badge-sm badge-ghost">Optional</span></td>
             </tr>
             <tr>
-              <td>thread_title</td>
-              <td>Optional: Title of the thread</td>
+              <td class="font-medium">thread_title</td>
+              <td>Title of the thread</td>
+              <td><span class="badge badge-sm badge-ghost">Optional</span></td>
             </tr>
             <tr>
-              <td>media_urls</td>
-              <td>Optional: Comma-separated URLs to media files</td>
+              <td class="font-medium">media_urls</td>
+              <td>Comma-separated URLs to media files</td>
+              <td><span class="badge badge-sm badge-ghost">Optional</span></td>
             </tr>
           </tbody>
         </table>
+      </div>
+
+      <div class="flex justify-center mt-8">
+        <a href="/dashboard" class="btn btn-primary btn-sm">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0l-4 4m4-4v12" />
+          </svg>
+          Start Scheduling
+        </a>
       </div>
     </div>
   </div>

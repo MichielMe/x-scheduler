@@ -1,9 +1,11 @@
-<div class="card bg-base-300 shadow-sm col-span-6">
+<div class="card bg-base-200 shadow-sm col-span-6 hover:shadow-md transition-all">
   <div class="card-body">
-    <h2 class="card-title">Card title!</h2>
-    <p>A card component has a figure, a body part, and inside body there are title and actions parts</p>
-    <div class="card-actions justify-end">
-      <button class="btn btn-primary">Buy Now</button>
+    <h2 class="card-title text-lg">{{ title }}</h2>
+    <p class="text-sm opacity-80">{{ content }}</p>
+    <div class="card-actions justify-end mt-4">
+      {% if button_text %}
+      <button class="btn btn-primary btn-sm">{{ button_text }}</button>
+      {% endif %}
     </div>
   </div>
 </div>

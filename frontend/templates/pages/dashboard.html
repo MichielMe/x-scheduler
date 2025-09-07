@@ -2,153 +2,240 @@
 
 {% block content %}
 <div class="col-span-12">
-  <div class="card w-full bg-base-100 shadow-xl">
-    <div class="card-body">
-      <h1 class="card-title text-3xl">X Scheduler Dashboard</h1>
-      <p class="text-xl mb-6">Monitor and manage your scheduled X posts</p>
+  <div class="flex flex-col gap-6">
+    <!-- Header section -->
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+      <div>
+        <h1 class="text-3xl font-bold mb-1">Dashboard</h1>
+        <p class="text-sm opacity-75">Monitor and manage your scheduled X posts</p>
+      </div>
 
-      <div class="flex flex-col md:flex-row gap-4">
-        <div class="stats shadow">
-          <div class="stat">
-            <div class="stat-title">Posts Scheduled</div>
-            <div class="stat-value">{{ stats.scheduled }}</div>
-            <div class="stat-desc">{{ stats.percent_used }}% of monthly limit used</div>
+      <div class="mt-4 md:mt-0">
+        <div class="badge badge-outline badge-primary gap-2 p-3">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span>Last synced: Today at 12:34</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="card bg-base-200 shadow-sm">
+        <div class="card-body p-5">
+          <div class="flex justify-between items-start">
+            <div>
+              <h2 class="card-title text-sm font-medium opacity-75">Posts Scheduled</h2>
+              <p class="text-3xl font-bold mt-1">{{ stats.scheduled }}</p>
+              <p class="text-xs mt-2 opacity-60">{{ stats.percent_used }}% of monthly limit used</p>
+            </div>
+            <div class="rounded-full bg-primary/10 p-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+            </div>
           </div>
+        </div>
+      </div>
 
-          <div class="stat">
-            <div class="stat-title">Posts Published</div>
-            <div class="stat-value">{{ stats.published }}</div>
+      <div class="card bg-base-200 shadow-sm">
+        <div class="card-body p-5">
+          <div class="flex justify-between items-start">
+            <div>
+              <h2 class="card-title text-sm font-medium opacity-75">Posts Published</h2>
+              <p class="text-3xl font-bold mt-1">{{ stats.published }}</p>
+              <p class="text-xs mt-2 opacity-60">Successfully delivered</p>
+            </div>
+            <div class="rounded-full bg-success/10 p-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-success" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
           </div>
+        </div>
+      </div>
 
-          <div class="stat">
-            <div class="stat-title">Posts Failed</div>
-            <div class="stat-value text-error">{{ stats.failed }}</div>
+      <div class="card bg-base-200 shadow-sm">
+        <div class="card-body p-5">
+          <div class="flex justify-between items-start">
+            <div>
+              <h2 class="card-title text-sm font-medium opacity-75">Posts Failed</h2>
+              <p class="text-3xl font-bold text-error mt-1">{{ stats.failed }}</p>
+              <p class="text-xs mt-2 opacity-60">Requires attention</p>
+            </div>
+            <div class="rounded-full bg-error/10 p-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-error" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Upload section -->
+    <div class="card bg-base-200 shadow-sm">
+      <div class="card-body">
+        <h2 class="card-title text-lg flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+          </svg>
+          Upload Schedule
+        </h2>
+        <p class="text-sm opacity-75 mb-4">Upload a CSV file with your posts to schedule them for publication</p>
+
+        <form method="POST" action="/api/uploads/upload-csv" enctype="multipart/form-data" class="flex flex-col gap-3">
+          <input type="file" name="csv_file" accept=".csv" class="file-input file-input-bordered w-full max-w-md"
+            required />
+          <div>
+            <button type="submit" class="btn btn-primary">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0l-4 4m4-4v12" />
+              </svg>
+              Upload Schedule
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Content tabs and tables -->
+    <div class="card bg-base-100 shadow-sm">
+      <div class="card-body">
+        <!-- Tabs for navigation -->
+        <div class="tabs tabs-boxed mb-6">
+          <a href="#posts" class="tab tab-active" id="posts-tab">Single Posts</a>
+          <a href="#threads" class="tab" id="threads-tab">Threads</a>
+        </div>
+
+        <!-- Posts Table -->
+        <div id="posts-section">
+          <div class="overflow-x-auto">
+            <table class="table table-zebra w-full">
+              <thead>
+                <tr>
+                  <th>Content</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                  <th class="text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for post in posts %}
+                <tr>
+                  <td class="max-w-md">
+                    <div class="truncate">{{ post.content }}</div>
+                  </td>
+                  <td>{{ post.scheduled_date }}</td>
+                  <td>
+                    {% if post.status == 'pending' %}
+                    <div class="badge badge-warning badge-sm">Pending</div>
+                    {% elif post.status == 'scheduled' %}
+                    <div class="badge badge-primary badge-sm">Scheduled</div>
+                    {% elif post.status == 'published' %}
+                    <div class="badge badge-success badge-sm">Published</div>
+                    {% elif post.status == 'failed' %}
+                    <div class="badge badge-error badge-sm">Failed</div>
+                    {% else %}
+                    <div class="badge badge-sm">{{ post.status }}</div>
+                    {% endif %}
+                  </td>
+                  <td class="text-right">
+                    <div class="dropdown dropdown-left">
+                      <div tabindex="0" role="button" class="btn btn-ghost btn-xs">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                          stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z" />
+                        </svg>
+                      </div>
+                      <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-200 rounded-box w-52">
+                        <li><a href="/post/{{ post.id }}">View Details</a></li>
+                        {% if post.status == 'scheduled' %}
+                        <li><a href="/cancel-post/{{ post.id }}">Cancel Post</a></li>
+                        {% endif %}
+                        {% if post.status == 'published' and post.x_post_id %}
+                        <li><a href="https://x.com/anyuser/status/{{ post.x_post_id }}" target="_blank">View on X</a>
+                        </li>
+                        {% endif %}
+                      </ul>
+                    </div>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
           </div>
         </div>
 
-        <div class="form-control w-full max-w-xs">
-          <label class="label">
-            <span class="label-text">Upload CSV file</span>
-          </label>
-          <form method="POST" action="/api/uploads/upload-csv" enctype="multipart/form-data"
-            class="flex flex-col gap-2">
-            <input type="file" name="csv_file" accept=".csv" class="file-input file-input-bordered w-full max-w-xs"
-              required />
-            <button type="submit" class="btn btn-primary">Upload</button>
-          </form>
+        <!-- Threads Table -->
+        <div id="threads-section" class="hidden">
+          <div class="overflow-x-auto">
+            <table class="table table-zebra w-full">
+              <thead>
+                <tr>
+                  <th>Thread Title</th>
+                  <th>Posts</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                  <th class="text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for thread in threads %}
+                <tr>
+                  <td>{{ thread.title }}</td>
+                  <td>{{ thread.posts|length }}</td>
+                  <td>{{ thread.scheduled_date }}</td>
+                  <td>
+                    {% if thread.status == 'pending' %}
+                    <div class="badge badge-warning badge-sm">Pending</div>
+                    {% elif thread.status == 'scheduled' %}
+                    <div class="badge badge-primary badge-sm">Scheduled</div>
+                    {% elif thread.status == 'published' %}
+                    <div class="badge badge-success badge-sm">Published</div>
+                    {% elif thread.status == 'failed' %}
+                    <div class="badge badge-error badge-sm">Failed</div>
+                    {% else %}
+                    <div class="badge badge-sm">{{ thread.status }}</div>
+                    {% endif %}
+                  </td>
+                  <td class="text-right">
+                    <div class="dropdown dropdown-left">
+                      <div tabindex="0" role="button" class="btn btn-ghost btn-xs">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                          stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z" />
+                        </svg>
+                      </div>
+                      <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-200 rounded-box w-52">
+                        <li><a href="/thread/{{ thread.id }}">View Details</a></li>
+                        {% if thread.status == 'scheduled' %}
+                        <li><a href="/cancel-thread/{{ thread.id }}">Cancel Thread</a></li>
+                        {% endif %}
+                      </ul>
+                    </div>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
-
-      <!-- Tabs for navigation -->
-      <div class="tabs tabs-boxed my-4">
-        <a href="#posts" class="tab tab-active" id="posts-tab">Single Posts</a>
-        <a href="#threads" class="tab" id="threads-tab">Threads</a>
-      </div>
-
-      <!-- Posts Table -->
-      <div id="posts-section">
-        <div class="overflow-x-auto">
-          <table class="table table-zebra w-full">
-            <thead>
-              <tr>
-                <th>Content</th>
-                <th>Date</th>
-                <th>Status</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for post in posts %}
-              <tr>
-                <td class="max-w-md">
-                  <div class="truncate">{{ post.content }}</div>
-                </td>
-                <td>{{ post.scheduled_date }}</td>
-                <td>
-                  {% if post.status == 'pending' %}
-                  <div class="badge badge-warning">Pending</div>
-                  {% elif post.status == 'scheduled' %}
-                  <div class="badge badge-primary">Scheduled</div>
-                  {% elif post.status == 'published' %}
-                  <div class="badge badge-success">Published</div>
-                  {% elif post.status == 'failed' %}
-                  <div class="badge badge-error">Failed</div>
-                  {% else %}
-                  <div class="badge">{{ post.status }}</div>
-                  {% endif %}
-                </td>
-                <td>
-                  <div class="dropdown dropdown-end">
-                    <div tabindex="0" role="button" class="btn btn-xs m-1">Actions</div>
-                    <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                      <li><a href="/post/{{ post.id }}" class="text-info">View</a></li>
-                      {% if post.status == 'scheduled' %}
-                      <li><a href="/cancel-post/{{ post.id }}" class="text-warning">Cancel</a></li>
-                      {% endif %}
-                      {% if post.status == 'published' and post.x_post_id %}
-                      <li><a href="https://x.com/anyuser/status/{{ post.x_post_id }}" target="_blank"
-                          class="text-primary">View on X</a></li>
-                      {% endif %}
-                    </ul>
-                  </div>
-                </td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- Threads Table -->
-      <div id="threads-section" class="hidden">
-        <div class="overflow-x-auto">
-          <table class="table table-zebra w-full">
-            <thead>
-              <tr>
-                <th>Thread Title</th>
-                <th>Posts</th>
-                <th>Date</th>
-                <th>Status</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for thread in threads %}
-              <tr>
-                <td>{{ thread.title }}</td>
-                <td>{{ thread.posts|length }}</td>
-                <td>{{ thread.scheduled_date }}</td>
-                <td>
-                  {% if thread.status == 'pending' %}
-                  <div class="badge badge-warning">Pending</div>
-                  {% elif thread.status == 'scheduled' %}
-                  <div class="badge badge-primary">Scheduled</div>
-                  {% elif thread.status == 'published' %}
-                  <div class="badge badge-success">Published</div>
-                  {% elif thread.status == 'failed' %}
-                  <div class="badge badge-error">Failed</div>
-                  {% else %}
-                  <div class="badge">{{ thread.status }}</div>
-                  {% endif %}
-                </td>
-                <td>
-                  <div class="dropdown dropdown-end">
-                    <div tabindex="0" role="button" class="btn btn-xs m-1">Actions</div>
-                    <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                      <li><a href="/thread/{{ thread.id }}" class="text-info">View</a></li>
-                      {% if thread.status == 'scheduled' %}
-                      <li><a href="/cancel-thread/{{ thread.id }}" class="text-warning">Cancel</a></li>
-                      {% endif %}
-                    </ul>
-                  </div>
-                </td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
     </div>
   </div>
 </div>
